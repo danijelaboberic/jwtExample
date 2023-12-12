@@ -6,12 +6,10 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import dmi.ris.model.Role;
 import dmi.ris.model.User;
-import dmi.ris.model.UsersRole;
 
 public class CustomUserDetail implements UserDetails{
+
 	private User u;
 
 	public User getU() {
@@ -20,16 +18,13 @@ public class CustomUserDetail implements UserDetails{
 	public void setU(User u) {
 		this.u = u;
 	}
-	public CustomUserDetail(User users) {
-		this.u = users;
+	public CustomUserDetail(User user) {
+		this.u = user;
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-		for (UsersRole r: u.getUsersRoles()) {
-			authorities.add(new SimpleGrantedAuthority("ROLE_" + r.getRole().getValue()));
-
-		}
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + u.getRole().getName()));
 		return authorities;
 	}
 	@Override

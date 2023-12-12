@@ -1,16 +1,15 @@
 package dmi.ris.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
-
+import jakarta.persistence.*;
+import java.util.Set;
 
 /**
- * The persistent class for the users database table.
+ * The persistent class for the user database table.
  * 
  */
 @Entity
-@Table(name="users")
+@Table(name="user")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,13 +18,24 @@ public class User implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idUser;
 
+	private String name;
+
 	private String password;
 
 	private String username;
 
-	//bi-directional many-to-one association to UsersRole
-	@OneToMany(mappedBy="user", fetch = FetchType.EAGER)
-	private List<UsersRole> usersRoles;
+	//bi-directional many-to-one association to Assigned
+	@OneToMany(mappedBy="user")
+	private Set<Assigned> assigneds;
+
+	//bi-directional many-to-one association to Project
+	@OneToMany(mappedBy="user")
+	private Set<Project> projects;
+
+	//bi-directional many-to-one association to Role
+	@ManyToOne
+	@JoinColumn(name="idRole")
+	private Role role;
 
 	public User() {
 	}
@@ -36,6 +46,14 @@ public class User implements Serializable {
 
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPassword() {
@@ -54,26 +72,56 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	public List<UsersRole> getUsersRoles() {
-		return this.usersRoles;
+	public Set<Assigned> getAssigneds() {
+		return this.assigneds;
 	}
 
-	public void setUsersRoles(List<UsersRole> usersRoles) {
-		this.usersRoles = usersRoles;
+	public void setAssigneds(Set<Assigned> assigneds) {
+		this.assigneds = assigneds;
 	}
 
-	public UsersRole addUsersRole(UsersRole usersRole) {
-		getUsersRoles().add(usersRole);
-		usersRole.setUser(this);
+	public Assigned addAssigned(Assigned assigned) {
+		getAssigneds().add(assigned);
+		assigned.setUser(this);
 
-		return usersRole;
+		return assigned;
 	}
 
-	public UsersRole removeUsersRole(UsersRole usersRole) {
-		getUsersRoles().remove(usersRole);
-		usersRole.setUser(null);
+	public Assigned removeAssigned(Assigned assigned) {
+		getAssigneds().remove(assigned);
+		assigned.setUser(null);
 
-		return usersRole;
+		return assigned;
+	}
+
+	public Set<Project> getProjects() {
+		return this.projects;
+	}
+
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
+	}
+
+	public Project addProject(Project project) {
+		getProjects().add(project);
+		project.setUser(this);
+
+		return project;
+	}
+
+	public Project removeProject(Project project) {
+		getProjects().remove(project);
+		project.setUser(null);
+
+		return project;
+	}
+
+	public Role getRole() {
+		return this.role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 }

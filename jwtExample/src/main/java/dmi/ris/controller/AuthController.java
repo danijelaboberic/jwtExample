@@ -37,6 +37,7 @@ public class AuthController {
         
         return ResponseEntity.ok(res);
 		}catch(Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().build();
 		}
 		

@@ -1,8 +1,8 @@
 package dmi.ris.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+import jakarta.persistence.*;
+import java.util.Set;
 
 
 /**
@@ -17,53 +17,53 @@ public class Role implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int idRole;
+	private int idrole;
 
-	private String value;
+	private String name;
 
-	//bi-directional many-to-one association to UsersRole
+	//bi-directional many-to-one association to User
 	@OneToMany(mappedBy="role")
-	private List<UsersRole> usersRoles;
+	private Set<User> users;
 
 	public Role() {
 	}
 
-	public int getIdRole() {
-		return this.idRole;
+	public int getIdrole() {
+		return this.idrole;
 	}
 
-	public void setIdRole(int idRole) {
-		this.idRole = idRole;
+	public void setIdrole(int idrole) {
+		this.idrole = idrole;
 	}
 
-	public String getValue() {
-		return this.value;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public List<UsersRole> getUsersRoles() {
-		return this.usersRoles;
+	public Set<User> getUsers() {
+		return this.users;
 	}
 
-	public void setUsersRoles(List<UsersRole> usersRoles) {
-		this.usersRoles = usersRoles;
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
-	public UsersRole addUsersRole(UsersRole usersRole) {
-		getUsersRoles().add(usersRole);
-		usersRole.setRole(this);
+	public User addUser(User user) {
+		getUsers().add(user);
+		user.setRole(this);
 
-		return usersRole;
+		return user;
 	}
 
-	public UsersRole removeUsersRole(UsersRole usersRole) {
-		getUsersRoles().remove(usersRole);
-		usersRole.setRole(null);
+	public User removeUser(User user) {
+		getUsers().remove(user);
+		user.setRole(null);
 
-		return usersRole;
+		return user;
 	}
 
 }
